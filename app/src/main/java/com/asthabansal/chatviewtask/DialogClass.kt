@@ -6,34 +6,40 @@ import androidx.fragment.app.DialogFragment
 import com.asthabansal.chatviewtask.databinding.FragmentDialogBinding
 
 interface chatDialogInterface{
-    fun returnChatType():Int
+    fun returnChatType(viewType: Int)
     }
 
 
-class dialogClass:DialogFragment() {
+class DialogClass() : DialogFragment() {
 
     lateinit var fragmentDialog : Dialog
     lateinit var dialogBinding:FragmentDialogBinding
     lateinit var mainActivity: MainActivity
-
+    lateinit var  chatDialogInterface: chatDialogInterface
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         mainActivity = activity as MainActivity
         fragmentDialog = Dialog(requireContext())
         dialogBinding = FragmentDialogBinding.inflate(layoutInflater)
         fragmentDialog?.setContentView(dialogBinding.root)
         dialogBinding.tvMe.setOnClickListener {
-            fun returnChatDataType(): Int {
-                return 1
-            }
+            chatDialogInterface.returnChatType(2)
+            fragmentDialog.dismiss()
+
         }
-        dialogBinding.tvGroup.setOnClickListener {
-            fun returnChatDataType(): Int {
-                return 2
-            }        }
+
         dialogBinding.tvOthers.setOnClickListener {
-            fun returnChatDataType(): Int {
-                return 3
-            }        }
+            chatDialogInterface.returnChatType(1)
+            fragmentDialog.dismiss()
+
+        }
+
+            dialogBinding.tvGroup.setOnClickListener {
+
+                chatDialogInterface.returnChatType(3)
+                fragmentDialog.dismiss()
+            }
+
+
 
         return fragmentDialog
     }

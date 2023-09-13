@@ -1,6 +1,6 @@
 package com.asthabansal.chatviewtask
 
-import android.os.IInterface
+//import android.os.Interface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,24 +33,24 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (this.viewType == 1) {
-            when (chatDialogInterface?.returnChatType()) {
-                2 -> {
+        /*when(viewType){
+            1->{}
+            2->{}
+            else->{}
+        }*/
+        if (this.viewType == 1 ) {
                     return otherViewHolder(
                         LayoutInflater.from(parent.context)
                             .inflate(R.layout.other_item_view, parent, false)
                     )
                 }
-
-                3 -> {
+        else if (this.viewType == 2 ) {
                     return groupViewHolder(
                         LayoutInflater.from(parent.context)
                             .inflate(R.layout.group_item_view, parent, false)
                     )
-                }
-                return viewType
-            }
         }
+
         else {
             return meViewHolder(
                 LayoutInflater.from(parent.context)
@@ -59,14 +59,14 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
         }
     }
 
-
-
-        //return viewType
-
-
         override fun getItemCount(): Int {
             return chatlist.size
         }
+
+    override fun getItemViewType(position: Int): Int {
+        this.viewType = chatlist[position].viewType
+        return chatlist[position].viewType
+    }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             when (holder) {

@@ -17,10 +17,10 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BlankFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BlankFragment : Fragment() {
+class BlankFragment : Fragment(), chatDialogInterface {
     lateinit var binding: FragmentBlankBinding
     lateinit var mainActivity: MainActivity
-    var chatlist = arrayListOf<>()
+    var chatlist = arrayListOf<chatDataClass>()
     lateinit var adapter:RecyclerAdapter
     lateinit var layoutManager: LinearLayoutManager
     private var param1: String? = null
@@ -29,6 +29,8 @@ class BlankFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivity = activity as MainActivity
+        adapter = RecyclerAdapter(chatlist)
+
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -46,6 +48,15 @@ class BlankFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.btnSend.setOnClickListener {
+            //empty message
+            var dialogClass = DialogClass()
+            dialogClass.chatDialogInterface = this
+            dialogClass.show(mainActivity.supportFragmentManager, DialogClass.TAG)
+        }
+        binding.recycler.adapter = adapter
+        layoutManager = LinearLayoutManager(mainActivity)
+        binding.recycler.layoutManager = layoutManager
     }
 
     companion object {
@@ -57,7 +68,6 @@ class BlankFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment BlankFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             BlankFragment().apply {
@@ -66,5 +76,11 @@ class BlankFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun returnChatType(viewType: Int) {
+         chatlist.add(chatDataClass(binding.etTypeMessage.text.toString(), viewType = viewType))
+        adapter.notifyDataSetChanged()
+
     }
 }
