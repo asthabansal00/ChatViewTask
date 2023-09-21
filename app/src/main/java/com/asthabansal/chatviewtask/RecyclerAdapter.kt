@@ -5,24 +5,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
+import com.asthabansal.chatviewtask.databinding.BottomSheetDialogBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var viewType: Int? = null
     var chatDialogInterface: chatDialogInterface? = null
+    var date =  SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().time)
+    var time =  SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().time)
 
     class meViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         var meChat = view.findViewById<TextView>(R.id.tvMeChat)
         var edit = view.findViewById<TextView>(R.id.tvEdit)
         var delete = view.findViewById<TextView>(R.id.tvDelete)
+        var myChatDate = view.findViewById<TextView>(R.id.tvDate)
+        var myChatTime = view.findViewById<TextView>(R.id.tvTime)
+        var editButton = view.findViewById<TextView>(R.id.tvEdit)
+
     }
 
     class otherViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var otherChat = view.findViewById<TextView>(R.id.tvOtherChat)
         var edit = view.findViewById<TextView>(R.id.tvEdit)
         var delete = view.findViewById<TextView>(R.id.tvDelete)
+        var otherChatDate = view.findViewById<TextView>(R.id.tvDate)
+        var otherChatTime = view.findViewById<TextView>(R.id.tvTime)
 
     }
 
@@ -30,6 +43,8 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
         var groupChat = view.findViewById<TextView>(R.id.tvGroupChat)
         var edit = view.findViewById<TextView>(R.id.tvEdit)
         var delete = view.findViewById<TextView>(R.id.tvDelete)
+        var groupChatDate = view.findViewById<TextView>(R.id.tvDate)
+        var groupChatTime = view.findViewById<TextView>(R.id.tvTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -73,11 +88,19 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
                 is meViewHolder -> {
                     holder.meChat.setText(chatlist[position].message.toString())
                     holder.edit.setOnClickListener {
-
                     }
                     holder.delete.setOnClickListener {
-
+                        chatlist.clear()
                     }
+                    holder.myChatTime.setText(time.toString())
+                    holder.myChatDate.setText(date.toString())
+
+                    /*holder.editButton.setOnClickListener {
+                        var bottomSheetDialog:BottomSheetDialog?=null
+                        var dialogBinding = BottomSheetDialogBinding.inflate()
+                        bottomSheetDialog?.dismiss()
+                        bottomSheetDialog?.show()
+                    }*/
                 }
 
                 is otherViewHolder -> {
@@ -86,8 +109,10 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
 
                     }
                     holder.delete.setOnClickListener {
-
+                        chatlist.clear()
                     }
+                    holder.otherChatTime.setText(time.toString())
+                    holder.otherChatDate.setText(date.toString())
                 }
 
                 is groupViewHolder -> {
@@ -96,8 +121,10 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
 
                     }
                     holder.delete.setOnClickListener {
-
+                        chatlist.clear()
                     }
+                    holder.groupChatTime.setText(time.toString())
+                    holder.groupChatDate.setText(date.toString())
                 }
             }
 
@@ -112,7 +139,6 @@ class RecyclerAdapter (var chatlist:ArrayList<chatDataClass>):RecyclerView.Adapt
             }
             return super.getItemId(position)
         }
-
 }
 
 

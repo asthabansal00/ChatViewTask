@@ -38,9 +38,6 @@ class DialogClass() : DialogFragment() {
                 chatDialogInterface.returnChatType(3)
                 fragmentDialog.dismiss()
             }
-
-
-
         return fragmentDialog
     }
     companion object{
